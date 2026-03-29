@@ -1,6 +1,6 @@
 #include <iostream>
 #include <ctime>
-#include "1.cpp"
+#include "file.cpp"
 using namespace std;
 
 int main() {
