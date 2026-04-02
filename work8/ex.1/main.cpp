@@ -5,10 +5,6 @@
 #include "file.cpp"
 using namespace std;
 
-// прототипы функций
-void OutputFileMatr(int** M, int n, int m);
-void RandomMatr(int** M, int n, int m, int A, int B);
-
 int main() {
     setlocale(LC_ALL, "Russian");
     srand(time(0));
