@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
     setlocale(LC_ALL, "Russian");
-    srand(static_cast<unsigned int>(time(0)));
+    srand(time(0));
     int n, m;
     // ввод размера с проверкой
     do {
