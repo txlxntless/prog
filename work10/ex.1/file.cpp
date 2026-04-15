@@ -1,6 +1,15 @@
 #include <iostream>
 #include <fstream>
 using namespace std;
+
+// функция заполнения случайными числами
+void RandomMatr(int** M, int n, int m, int A, int B) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            M[i][j] = A + rand() % (B - A + 1);
+        }
+    }
+}
 // функция заполнения в зависимости от выбора пользователя
 void fillChoice(int choice, int n, int m, int** M) {
     if (choice == 1) {
