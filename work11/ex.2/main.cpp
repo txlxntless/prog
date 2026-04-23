@@ -1,64 +1,93 @@
 #include <iostream>
 #include <fstream>
-#include <algorithm> // для swap
+#include <ctime>
+#include "file.cpp"
 using namespace std;
 
-// функция заполнения матрицы случайными числами
-void RandomMatr(int** M, int n, int m, int A, int B) {
+int main() {
+    setlocale(LC_ALL, "Russian");
+    srand(time(0)); // инициализация генератора случайных чисел
+    int n, m;
+    // ввод размера с проверкой
+    do {
+        cout << "Введите количество строк (n) и столбцов (m): ";
+        cin >> n >> m;
+        if (n <= 0 || m <= 0) {
+            cout << "Ошибка! Размеры должны быть больше нуля.\n";
+        }
+    } while (n <= 0 || m <= 0);
+// выделение памяти для двумерного динамического массива (матрицы)
+    int** M = new int*[n];
+    for (int i = 0; i < n; i++) {
+        M[i] = new int[m];
+    }
+    // меню ввода
+    cout << "------Меню ввода------" << endl;
+    cout << "1. Ввод с экрана" << endl;
+    cout << "2. Ввод из файла" << endl;
+    cout << "3. Заполнение случайными числами" << endl;
+    int choice;
+    cin >> choice;
+    if (choice == 1) {
+        cout << "Введите элементы матрицы:" << endl;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                cin >> M[i][j];
+    }
+    else if (choice == 2) {
+        // считывание из файла с проверкой
+        string filename;
+        cout << "Введите имя файла: ";
+        cin >> filename;
+        ifstream fin(filename);
+        if (!fin.is_open()) { // isopen() для проверки
+            cout << "Ошибка: файл не найден или не может быть открыт! Введите матрицу с экрана:" << endl;
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                    cin >> M[i][j];
+        } else {
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < m; j++)
+                    fin >> M[i][j];
+            fin.close();
+        }
+    }
+    else if (choice == 3) {
+        int A, B;
+        cout << "Введите интервал [a, b] для случайных чисел: ";
+        cin >> A >> B;
+        // Проверка на корректность интервала
+        if (A > B) std::swap(A, B); // Гарантируем A <= B
+        RandomMatr(M, n, m, A, B);
+    }
+    else {
+        cout << "Некорректный выбор. Матрица будет заполнена нулями." << endl;
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                M[i][j] = 0;
+    }
+    // вывод исходной матрицы на экран
+    cout << "\nПолученная исходная матрица:" << endl;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
-            M[i][j] = A + rand() % (B - A + 1);
+            cout << M[i][j] << "\t";
         }
+        cout << endl;
     }
-}
-// функция вывода матрицы в файл
-void OutFileMatr(int** M, int n, int m) {
-    ofstream fout("output_matrix.txt");
-    if (fout.is_open()) {
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                fout << M[i][j] << " ";
-            }
-            fout << endl;
-        }
-        fout.close();
-        cout << "\nМатрица успешно сохранена в файл output_matrix.txt" << endl;
-    } else {
-        cout << "Ошибка при открытии файла для записи!" << endl;
-    }
-}
-// новая функция: Переставить местами первый столбец и столбец с последним максимальным элементом
-void SwapFirstColumnWithLastMaxColumn(int** M, int n, int m) {
-    if (n <= 0 || m <= 0) {
-        cout << "Ошибка: Матрица пуста или имеет некорректные размеры." << endl;
-        return;
-    }
-    if (m == 1) {
-        cout << "Матрица имеет только один столбец. Перестановка не требуется." << endl;
-        return;
-    }
-    int maxVal = M[0][0];
-    int maxColIndex = 0; // индекс столбца, содержащего последний максимальный элемент
-    // находим максимальный элемент и индекс столбца его последнего вхождения, чтобы 
-    // 'maxColIndex' всегда указывал на самый правый/нижний из максимальных.
+    // вызов функции для перестановки столбцов
+    SwapFirstColumnWithLastMaxColumn(M, n, m);
+    // вывод матрицы после перестановки на экран
+    cout << "\nМатрица после перестановки столбцов:" << endl;
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
-            if (M[i][j] >= maxVal) { // используем >= чтобы найти последнее вхождение при равных значениях
-                maxVal = M[i][j];
-                maxColIndex = j;
-            }
+            cout << M[i][j] << "\t";
         }
+        cout << endl;
     }
-    if (maxColIndex == 0) {
-        cout << "Максимальный элемент уже находится в первом столбце. Перестановка не требуется." << endl;
-        return;
-    }
-    cout << "\n--- Информация о перестановке столбцов" << endl;
-    cout << "Максимальный элемент: " << maxVal << " найден в столбце с индексом: " << maxColIndex << " (это столбец #" << maxColIndex + 1 << ")" << endl;
-    cout << "Первый столбец (индекс 0) будет переставлен со столбцом с индексом " << maxColIndex << "." << endl;
-    // выполняем перестановку столбцов
+    OutFileMatr(M, n, m);    // вывод измененной матрицы в файл
     for (int i = 0; i < n; i++) {
-        std::swap(M[i][0], M[i][maxColIndex]);
+        delete[] M[i];
     }
-    cout << "Столбцы успешно переставлены." << endl;
+    delete[] M;
+    return 0;
 }
