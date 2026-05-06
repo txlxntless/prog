@@ -1,0 +1,27 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string s[3];
+    s[0] = "Do you like programming?";
+    s[1] = "I love programming!";
+    s[2] = "But sometimes I lose my head from love.";
+    // сортировка "пузырьком" по длине
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2 - i; j++) {
+            // если текущая строка длиннее следующей - меняем их местами
+            if (s[j].length() > s[j + 1].length()) {
+                string temp = s[j];
+                s[j] = s[j + 1];
+                s[j + 1] = temp;
+            }
+        }
+    }
+    // вывод результата
+    cout << "Предложения по возрастанию длины:" << endl;
+    for (int i = 0; i < 3; i++) {
+        cout << s[i] << " (Длина: " << s[i].length() << ")" << endl;
+    }
+    return 0;
+}
