@@ -1,35 +1,30 @@
 #include <iostream>
 #include <string>
-#include <vector>
-#include <cctype>
 using namespace std;
 
 int main() {
-    // текст из лабораторной работы
-    string text = "Do you like programming?\n"
-                       "I love programming!\n"
-                       "But sometimes I lose my head from love.\n"
-                       ":)";
+    string text = "Do you like programming?\nI love programming!\nBut sometimes I lose my head from love.\n:)";
     // 1. вывод всех знаков препинания
     cout << "1. Знаки препинания в тексте: ";
-    for (char ch : text) {
-        if (ispunct(static_cast<unsigned char>(ch))) {
-            cout << ch << " ";
+    for (int i = 0; i < text.length(); i++) {
+        char c = text[i];
+        if (c == '?' || c == '!' || c == '.' || c == ':' || c == ')') {
+            cout << c << " ";
         }
     }
     cout << endl;
     // 2. вывод последнего слова текста
-    // идем с конца строки, чтобы найти последнее слово (именно буквенные символы)
     string lastWord = "";
-    int i = text.length() - 1;
-    // пропускаем символы в конце, которые не являются буквами
-    while (i >= 0 && !isalpha(static_cast<unsigned char>(text[i]))) {
-        i--;
-    }
-    // собираем последнее слово по буквам
-    while (i >= 0 && isalpha(static_cast<unsigned char>(text[i]))) {
-        lastWord = text[i] + lastWord;
-        i--;
+    // идем с конца строки назад
+    for (int i = text.length() - 1; i >= 0; i--) {
+        // проверка буква ли это 
+        if ((text[i] >= 'a' && text[i] <= 'z') || (text[i] >= 'A' && text[i] <= 'Z')) {
+            // прибавляем букву В начало строки, чтобы слово не перевернулось
+            lastWord = text[i] + lastWord;
+            if (text[i - 1] == ' ') {
+                break; 
+            }
+        }
     }
     cout << "2. Последнее слово: " << lastWord << endl;
     return 0;
