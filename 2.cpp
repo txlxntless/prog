@@ -6,7 +6,7 @@ class BankAccount {
 private:
     char ownerName[50];   // Имя владельца счета
     int accountNumber;    // Номер счета
-    double balance;       // Баланс (сумма денег)
+    double balance;       // Баланс 
     bool isSavings;       // Является ли счет сберегательным/накопительным
 
 public:
@@ -46,7 +46,7 @@ public:
         return isSavings;
     }
 
-    // Специфичный метод: оценка финансового состояния счета
+    // Специфичный метод: оценка состояния финансового состояния счета
     void GetFinancialStatus() {
         cout << "Применен метод GetFinancialStatus" << endl;
         if (balance >= 100000.0) {
@@ -65,21 +65,21 @@ int main() {
 
     BankAccount myAccount;
 
-    // Демонстрация методов Set
+    // Сеттеры
     myAccount.SetOwnerName("Иван Иванов");
     myAccount.SetAccountNumber(98765432);
     myAccount.SetBalance(150000.75);
     myAccount.SetIsSavings(true);
 
-    // Демонстрация методов Get
-    cout << "\nИнформация о счете через методы Get:" << endl;
+    // Геттеры
+    cout << "\nИнформация о счете через Get:" << endl;
     cout << "Владелец: " << myAccount.GetOwnerName() << endl;
     cout << "Номер счета: " << myAccount.GetAccountNumber() << endl;
     cout << "Текущий баланс: " << myAccount.GetBalance() << " руб." << endl;
     cout << "Сберегательный тариф: " << (myAccount.GetIsSavings() ? "Да" : "Нет") << endl;
 
-    // Демонстрация работы специфичного метода
-    cout << "\nВызов специфичного метода:" << endl;
+    // Специфичный метод
+    cout << "\nОтработка специфичного метода:" << endl;
     myAccount.GetFinancialStatus();
 
     return 0;
