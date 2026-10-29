@@ -4,15 +4,17 @@
 #include "book_of_subscribers.cpp"
 
 void resizeArray(Subscriber*& arr, int& capacity) { 
-    int newCapacity = capacity == 0 ? 3 : capacity * 2; 
+    int newCapacity = (capacity == 0) ? 4 : capacity * 2; 
     Subscriber* newArr = new Subscriber[newCapacity]; 
     for (int i = 0; i < capacity; ++i) { 
         newArr[i] = arr[i]; 
     } 
-    delete[] arr; 
+    if (arr != nullptr) {
+        delete[] arr; 
+    }
     arr = newArr; 
     capacity = newCapacity; 
-} 
+}
  
 int main() { 
     system("chcp 65001 > nul");
